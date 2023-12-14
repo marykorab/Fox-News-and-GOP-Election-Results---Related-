@@ -1548,7 +1548,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<p>Introduction:
+<p><strong>Introduction:</strong>
 Is there a meaningful relationship between the affordability of housing in a region and the viewing of politically biased news? Further, does politically biased news content on television push voters toward favoring a certain party? In this study, I plan to investigate the extent to which biased news coverage impacts voting patterns of Americans. I hypothesize that voting patterns shift to favor certain parties when Americans view content on television that is politically biased. When Americans continuously intake content that is heavily skewed in one direction versus another, I expect that it is more likely that they will begin to adjust their voting patterns. I also predict that greater viewing of politically biased content will occur in higher-income areas. My sample contains data from 10,126 towns across the U.S., and includes 28 states in the sample. After merging two data sets, I conducted additional analysis only looking at the state of Connecticut. My unit of analysis is a town. This study is not cross-sectional, since I am not only looking at one point in time. Rather, I am looking at changes over several years. This investigation is important in that it sheds light on one of many factors (biased news) that can impact the voting habits of American citizens.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
@@ -1556,7 +1556,7 @@ Is there a meaningful relationship between the affordability of housing in a reg
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
 </div>
-<p>Data:
+<p><strong>Data:</strong>
 In my first analysis, I filtered the results by state to only analyze Connecticut’s relationship between affordability of housing in a town and viewing of Fox News. The explanatory variable is the affordability of housing in a town, measured by percentage of affordable housing units in the town. It is coded as a proportion from 0 to 100. My outcome variable is the share of Fox News subscribers in 2000. The variable is calculated as a proportion, and compares the two-party vote share for the Republicans in the 1992, 1996, and 2000 Presidential elections. For example, if the outcome variable were coded = 0.331460674157303, this would mean that Republicans received ~ 33% of the vote. This variable is measured from the foxnews data set taken from “The Fox News Effect: Media Bias and Voting.” Quarterly Journal of Economics by Stefano DellaVigna and Ethan Kaplan (2007).</p>
 <p>In my second part of analysis, I analyzed the relationship between Fox News subscription and support of Republican candidates measured by vote across the U.S. The explanatory variable is the share of Fox News subscribers in 2000. It is coded as a proportion from 0 to 1. My outcome variable is the shift in voting that favors a certain party. The variable is calculated as a proportion, and compares the two-party vote share for the Republicans in the 1992, 1996, and 2000 Presidential elections. If I observe voting patterns favoring Republicans in areas highly exposed to Fox News, this would support my hypothesis. However, if I observe less support for Republicans, or the same amount of support for Republicans when highly exposed to Fox News, this would provide evidence against my hypothesis. When I run a regression of Republican support on the Fox News indicator variable, a positive, significant coefficient would provide support for this hypothesis.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1573,7 +1573,7 @@ In my first analysis, I filtered the results by state to only analyze Connecticu
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Intercept
 </td>
 <td style="text-align:center;">
 0.091
@@ -1650,7 +1650,7 @@ Coefficients:
          (Intercept)  `Percent Affordable`  
             0.090793             -0.003677  </code></pre>
 </div>
-<p>Results:</p>
+<p><strong>Results:</strong></p>
 <p>For the regression that analyzes the relationship between affordability of housing and Fox News subscriptions, a one percentage point increase in affordability of housing resulted in a 0.004 percentage point reduction in Fox News subscriptions.</p>
 <p>The intercept means that in towns where the affordability of housing is zero, the Fox News subscriptions will be at about 0.091 units.</p>
 <p>The p-value of less than 0.001 means that affordability of housing is significant in explaining Fox News consumption in a Connecticut town. In terms of whether or not this should be interpreted causally, this study used observational data, not random assignment. We don’t know if the relationship is driven solely by affordability, so we cannot interpret causally.</p>
@@ -1670,7 +1670,7 @@ Coefficients:
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Intercept
 </td>
 <td style="text-align:center;">
 0.447
@@ -1692,7 +1692,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-income1990
+Income in 1990
 </td>
 <td style="text-align:center;">
 0.014
@@ -1752,7 +1752,7 @@ R2 Adj.
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Intercept
 </td>
 <td style="text-align:center;">
 0.469
@@ -1774,7 +1774,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-subrf2000
+Share of Fox News Subscriptions
 </td>
 <td style="text-align:center;">
 0.018
@@ -1852,7 +1852,7 @@ Coefficients:
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Intercept
 </td>
 <td style="text-align:center;">
 0.449
@@ -1874,7 +1874,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-hisp1990
+Proportion of Hispanic Voters 1990
 </td>
 <td style="text-align:center;">
 −0.130
@@ -1896,7 +1896,7 @@ p = 0.086
 </tr>
 <tr>
 <td style="text-align:left;">
-income1990
+Income in 1990
 </td>
 <td style="text-align:center;">
 0.014
@@ -1946,9 +1946,9 @@ R2 Adj.
 <p>In this multiple regression, a one percentage point increase in proportion of Hispanic voters in 1990 resulted in a 0.130 percentage point reduction in 1992 GOP vote share, holding income in 1990 fixed. A one percentage point increase in income in 1990 resulted in a 0.014 percentage point increase in GOP Vote share, holding proportion of Hispanic voters in 1990 fixed.</p>
 <p>The p-value of 0.086 means that proportion of Hispanic voters is not significant in explaining GOP vote share across the U.S. In terms of whether or not this should be interpreted causally, this study used observational data, not random assignment. We don’t know if the relationship is driven solely by race, so we cannot interpret causally.</p>
 <p>The p-value of 0.086 means that proportion of Hispanic voters is not significant in explaining GOP vote share across the U.S. In terms of whether or not this should be interpreted causally, this study used observational data, not random assignment. We don’t know if the relationship is driven solely by race, so we cannot interpret causally.</p>
-<p>Conclusion:</p>
+<p><strong>Conclusion:</strong></p>
 <p>Post-analysis, it does seem that affordability of housing affects Fox News consumption (measured by subscription percentage) in a Connecticut town, as well as income and GOP vote share.There does not appear to be a significant relationship between proportion of Hispanic voters and GOP vote share. Most interestingly in the context of this study, there also appears to be a significant relationship between Fox News consumption and GOP election results. This raises further questions that can be analyzed in later studies, such as those that investigate the psychological effects of watching biased news.</p>
-<p>There are a few potential confounding variables. For example, urban versus rural, or income of residents in that town connected with family size could be potential confounders. If I had more time and money to complete this analysis, I would filter additional data by political party to see if any registered democrats or independent voters in these towns decided to “vote Republican” after the introduction of Fox News in the area.</p>
+<p>There are a few potential confounding variables, or factors other than those currently being analyzed that can impact results. For example, urban versus rural areas, or income of residents in that town in conjunction with family size could be potential confounders. If I had more time and money to complete this analysis, I would filter additional data by political party to see if any registered democrats or independent voters in these towns decided to “vote Republican” after the introduction of Fox News in the area.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

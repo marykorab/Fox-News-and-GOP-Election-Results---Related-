@@ -14,23 +14,31 @@ output:
 library(tidyverse)
 ct_votes_study <- read_csv("Affordable_Housing_by_Town_2011-2022.csv")
 ```
-Introduction: 
+**Introduction:**
   Is there a meaningful relationship between the affordability of housing in a region and the viewing of politically biased news? Further, does politically biased news content on television push voters toward favoring a certain party? In this study, I plan to investigate the extent to which biased news coverage impacts voting patterns of Americans. I hypothesize that voting patterns shift to favor certain parties when Americans view content on television that is politically biased. When Americans continuously intake content that is heavily skewed in one direction versus another, I expect that it is more likely that they will begin to adjust their voting patterns. I also predict that greater viewing of politically biased content will occur in higher-income areas. My sample contains data from 10,126 towns across the U.S., and includes 28 states in the sample. After merging two data sets, I conducted additional analysis only looking at the state of Connecticut. My unit of analysis is a town. This study is not cross-sectional, since I am not only looking at one point in time. Rather, I am looking at changes over several years. This investigation is important in that it sheds light on one of many factors (biased news) that can impact the voting habits of American citizens.  
 
 ```{r, echo = FALSE}
+
 library(usmap)
 library(ggplot2)
-shaded_in_state <- c('Iowa')
-plot_usmap(regions = "states") + labs(title = "Map of US") + theme(panel.background = element_rect(color = "gray", fill = "light yellow"))
+
+highlight_states <- data.frame(state = c("CT"))
+
+plot_usmap(data = highlight_states, values = "state", regions = "states") +
+  scale_fill_manual(values = c("CT" = "blue"), na.value = "gray", guide = FALSE) +
+  labs(title = "Map of US") +
+  theme(panel.background = element_rect(color = "gray", fill = "light yellow"))
+
 ```
 
 ```{r, echo = FALSE}
+
 library(usmap)
 library(ggplot2)
 
 plot_usmap(regions = "county", include = c("CT")) + labs(title = "Connecticut") + theme(panel.background = element_rect(color = "gray", fill = "cadetblue1"))
 ```
-Data: 
+**Data:**
   In my first analysis, I filtered the results by state to only analyze Connecticut's relationship between affordability of housing in a town and viewing of Fox News. The explanatory variable is the affordability of housing in a town, measured by percentage of affordable housing units in the town. It is coded as a proportion from 0 to 100. My outcome variable is the share of Fox News subscribers in 2000. The variable is calculated as a proportion, and compares the two-party vote share for the Republicans in the 1992, 1996, and 2000 Presidential elections. For example, if the outcome variable were coded = 0.331460674157303, this would mean that Republicans received  ~ 33% of the vote. This variable is measured from the foxnews data set taken from “The Fox News Effect: Media Bias and Voting.” Quarterly Journal of Economics by Stefano DellaVigna and Ethan Kaplan (2007).
 
 In my second part of analysis, I analyzed the relationship between Fox News subscription and support of Republican candidates measured by vote across the U.S. The explanatory variable is the share of Fox News subscribers in 2000. It is coded as a proportion from 0 to 1. My outcome variable is the shift in voting that favors a certain party. The variable is calculated as a proportion, and compares the two-party vote share for the Republicans in the 1992, 1996, and 2000 Presidential elections. If I observe voting patterns favoring Republicans in areas highly exposed to Fox News, this would support my hypothesis. However, if I observe less support for Republicans, or the same amount of support for Republicans when highly exposed to Fox News, this would provide evidence against my hypothesis. When I run a regression of Republican support on the Fox News indicator variable, a positive, significant coefficient would provide support for this hypothesis. 
@@ -55,19 +63,22 @@ new_data_sett <- inner_join(fox_ct, ct_votes_study, by = "town")
 
 new_regression_gg <- new_data_sett |>
   ggplot(mapping = aes(x = `Percent Affordable`, y = subrf2000)) +
-  geom_jitter(color = "steelblue1") + geom_smooth(method = "lm", color = "indianred1", se = FALSE, size = 1.5) + theme_minimal() + 
+  geom_jitter(color = "steelblue1") + geom_smooth(method = "lm", color = "indianred1", se = FALSE, size = 1.5) + theme_minimal() +
   labs(
     x = "Percent Affordable Housing", 
     y = "Fox News Subscriptions"
-  )
+  ) + stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")
 
 
 library(broom)
 regression_new <- lm(subrf2000 ~ `Percent Affordable`, data = new_data_sett)
+var_labels <- c("(Intercept)" = "Intercept", "Percent Affordable" = "Percent Affordable")
 
 modelsummary::modelsummary(regression_new,
                            statistic = c("s.e. = {std.error}",
-                                         "p = {p.value}"),
+                                         "p = {p.value}"), coef_map = var_labels,
                            gof_map = c("nobs", "r.squared", "adj.r.squared"))
 
 
@@ -80,7 +91,7 @@ regression_new
 
 
 ```
-Results: 
+**Results:** 
 
 For the regression that analyzes the relationship between affordability of housing and Fox News subscriptions, a one percentage point increase in affordability of housing resulted in a 0.004 percentage point reduction in Fox News subscriptions. 
 
@@ -101,15 +112,19 @@ fox_news_visualization_milestone3 <-
   labs(
     x = "Income in 1990", 
     y = "GOP Vote Share 1992"
-  )
+  )  + stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")
 fox_news_visualization_milestone3
 
 library(broom)
 income_regression <- lm(gopvoteshare1992 ~ income1990, data = fox_news)
+var_labels <- c("(Intercept)" = "Intercept", "income1990" = "Income in 1990")
 
 modelsummary::modelsummary(income_regression,
                            statistic = c("s.e. = {std.error}",
-                                         "p = {p.value}"),
+                                
+                                         "p = {p.value}"), coef_map = var_labels,
                            gof_map = c("nobs", "r.squared", "adj.r.squared"))
 
 
@@ -124,17 +139,20 @@ fox_news_visualization_milestonee <-
   labs(
     x = "Fox News Subscriptions 2000", 
     y = "GOP Vote Share 1996"
-  )
+  ) +   stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")
 fox_news_visualization_milestonee
 
 
 library(broom)
 news_andvoteshare_regression <- lm(gopvoteshare1996 ~ subrf2000, data = fox_news)
+var_labels <- c("(Intercept)" = "Intercept","subrf2000" = "Share of Fox News Subscriptions")
 
 modelsummary::modelsummary(news_andvoteshare_regression,
-                           statistic = c("s.e. = {std.error}",
-                                         "p = {p.value}"),
-                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+                           statistic = c("s.e. = {std.error}", 
+                                         "p = {p.value}"), coef_map = var_labels,
+                           gof_map = c("nobs", "r.squared", "adj.r.squared")) 
 
 income_regression
 news_andvoteshare_regression
@@ -159,14 +177,18 @@ fox_news_visualization_milestone4 <-
   labs(
     x = "Proportion of Hispanic Viewers in 1990", 
     y = "GOP Vote Share 1992"
-  ) 
+  )  + stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth")
 fox_news_visualization_milestone4
 
 
 multiple_regression <- lm(gopvoteshare1992 ~ hisp1990 + income1990, data = fox_news)
+var_labels <- c("(Intercept)" = "Intercept", "hisp1990" = "Proportion of Hispanic Voters 1990", "income1990" = "Income in 1990")
+
 modelsummary::modelsummary(multiple_regression,
                            statistic = c("s.e. = {std.error}",
-                                         "p = {p.value}"),
+                                         "p = {p.value}"), coef_map = var_labels,
                            gof_map = c("nobs", "r.squared", "adj.r.squared"))
 
 ```
@@ -176,11 +198,11 @@ The p-value of 0.086 means that proportion of Hispanic voters is not significant
 
 The p-value of 0.086 means that proportion of Hispanic voters is not significant in explaining GOP vote share across the U.S. In terms of whether or not this should be interpreted causally, this study used observational data, not random assignment. We don't know if the relationship is driven solely by race, so we cannot interpret causally.
 
-Conclusion: 
+**Conclusion:** 
 
   Post-analysis, it does seem that affordability of housing affects Fox News consumption (measured by subscription percentage) in a Connecticut town, as well as income and GOP vote share.There does not appear to be a significant relationship between proportion of Hispanic voters and GOP vote share. Most interestingly in the context of this study, there also appears to be a significant relationship between Fox News consumption and GOP election results. This raises further questions that can be analyzed in later studies, such as those that investigate the psychological effects of watching biased news. 
   
-  There are a few potential confounding variables. For example, urban versus rural, or income of residents in that town connected with family size could be potential confounders. If I had more time and money to complete this analysis, I would filter additional data by political party to see if any registered democrats or independent voters in these towns decided to "vote Republican" after the introduction of Fox News in the area.  
+  There are a few potential confounding variables, or factors other than those currently being analyzed that can impact results. For example, urban versus rural areas, or income of residents in that town in conjunction with family size could be potential confounders. If I had more time and money to complete this analysis, I would filter additional data by political party to see if any registered democrats or independent voters in these towns decided to "vote Republican" after the introduction of Fox News in the area.  
   
 
 
